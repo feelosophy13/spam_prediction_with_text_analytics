@@ -1,4 +1,4 @@
-<h1>Utilizing Text Analytics: Spam Prediction</h1>
+<h1>Utilizing Text Analytics to Build Spam Prediction Models</h1>
 
 <h2>Introduction</h2>
 
@@ -31,11 +31,15 @@ The dataset contains just two fields:
   <td>1</td>
  </tr>
  <tr>
-  <td>2 Subject: the stock trading gunslinger  fanny is merrill but muzo not colza attainder and penultimate like esmark perspicuous ramble is segovia not group try slung kansas tanzania yes chameleon or continuant clothesman no  libretto is chesapeake but tight not waterway herald and hawthorn like chisel morristown superior is deoxyribonucleic not clockwork try hall incredible mcdougall yes hepburn or einsteinian earmark no  sapling is boar but duane not plain palfrey and inflexible like huzzah pepperoni bedtime is nameable not attire try edt chronography optima yes pirogue or diffusion albeit no</td>
+  <td>Subject: the stock trading gunslinger  fanny is merrill but muzo not colza attainder and penultimate like esmark perspicuous ramble is segovia not group try slung kansas tanzania yes chameleon or continuant clothesman no  libretto is chesapeake but tight not waterway herald and hawthorn like chisel morristown superior is deoxyribonucleic not clockwork try hall incredible mcdougall yes hepburn or einsteinian earmark no  sapling is boar but duane not plain palfrey and inflexible like huzzah pepperoni bedtime is nameable not attire try edt chronography optima yes pirogue or diffusion albeit no</td>
   <td>1</td>
  </tr>
  <tr>
   <td>Subject: re : subscriptions  stephanie ,  please , discontinue credit and renew the two other publications :  energy & power risk management and the journal of computational finance .  enron north america corp .  from : stephanie e taylor 12 / 12 / 2000 01 : 43 pm  to : vince j kaminski / hou / ect @ ect  cc :  subject : subscriptions  dear vince ,  we will be happy to renew your subscription to risk . in addition , the  following publications are up for renewal :  reg . subscription cost with corp . discount  credit $ 1145 . 00 $ 973 . 25  energy & power risk management $ 375 . 00 $ 318 . 75  the journal of computational finance $ 291 . 75 $ 247 . 99  if you wish to renew these , we will also take care of this for you . i would  appreciate your responding by december 18 th . please include your company and  cost center numbers with your renewal .  thank you ,  stephanie e . taylor  esource  713 - 345 - 7928</td>
+  <td>0</td>
+ </tr>
+ <tr>
+  <td>Subject: re : baylor - enron case study  cindy ,  yes , i shall co - author this paper and i have planted the idea in john  martin ' s head .  vince  from : cindy derecskey @ enron on 10 / 25 / 2000 11 : 38 am  to : vince j kaminski / hou / ect @ ect  cc :  subject : baylor - enron case study  vince ,  i forgot to inquire whether you would also like to be present during the  interview process with john martin and ken , jeff and andy ?  let me know . . . . thanks ,  cindy</td>
   <td>0</td>
  </tr>
 </table>
@@ -45,6 +49,7 @@ The dataset contains just two fields:
     > emails <- read.csv('emails.csv', stringsAsFactors=FALSE)
 
 <h6>Brief Overview of the data</h6>
+
     > dim(emails)
     [1] 5728    2
     > table(emails$spam)
