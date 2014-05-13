@@ -2,14 +2,12 @@
 
 <h2>Introduction</h2>
 
-<!--
-This text analytics and model building exercise was taken from an online course called the Analytics Edge offered through <a href='https://www.edx.org/' target='_blank'>EdX</a>
+This text analytics and model building exercise was taken from an online course called <strong>the Analytics Edge</strong> offered through <a href='https://www.edx.org/' target='_blank'>EdX</a>
 
 Project description from the course site:
 <blockquote>
 We will build and evaluate a spam filter using a publicly available dataset first described in the 2006 conference paper "Spam Filtering with Naive Bayes -- Which Naive Bayes?" by V. Metsis, I. Androutsopoulos, and G. Paliouras. The "ham" messages in this dataset come from the inbox of former Enron Managing Director for Research Vincent Kaminski, one of the inboxes in the Enron Corpus. One source of spam messages in this dataset is the SpamAssassin corpus, which contains hand-labeled spam messages contributed by Internet users. The remaining spam was collected by Project Honey Pot, a project that collects spam messages and identifies spammers by publishing email address that humans would know not to contact but that bots might target with spam. The full dataset we will use was constructed as roughly a 75/25 mix of the ham and spam messages.
 </blockquote>
--->
 
 The dataset contains just two fields:
 
@@ -19,30 +17,17 @@ The dataset contains just two fields:
 </ul>
 
 <h2>Preparation Step</h2>
-<h6>How the dataset looks</h6>
-
-<table>
- <tr>
-  <th>text</th>
-  <th>spam</th>
- </tr>
- <tr>
-  <td>Subject: naturally irresistible your corporate identity  lt is really hard to recollect a company : the  market is full of suqgestions and the information isoverwhelminq ; but a good  catchy logo , stylish statlonery and outstanding website  will make the task much easier .  we do not promise that havinq ordered a iogo your  company will automaticaily become a world ieader : it isguite ciear that  without good products , effective business organization and practicable aim it  will be hotat nowadays market ; but we do promise that your marketing efforts  will become much more effective . here is the list of clear  benefits : creativeness : hand - made , original logos , specially done  to reflect your distinctive company image . convenience : logo and stationery  are provided in all formats ; easy - to - use content management system letsyou  change your website content and even its structure . promptness : you  will see logo drafts within three business days . affordability : your  marketing break - through shouldn ' t make gaps in your budget . 100 % satisfaction  guaranteed : we provide unlimited amount of changes with no extra fees for you to  be surethat you will love the result of this collaboration . have a look at our  portfolio _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ not interested . . . _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</td>
-  <td>1</td>
- </tr>
- <tr>
-  <td>2 Subject: the stock trading gunslinger  fanny is merrill but muzo not colza attainder and penultimate like esmark perspicuous ramble is segovia not group try slung kansas tanzania yes chameleon or continuant clothesman no  libretto is chesapeake but tight not waterway herald and hawthorn like chisel morristown superior is deoxyribonucleic not clockwork try hall incredible mcdougall yes hepburn or einsteinian earmark no  sapling is boar but duane not plain palfrey and inflexible like huzzah pepperoni bedtime is nameable not attire try edt chronography optima yes pirogue or diffusion albeit no</td>
-  <td>1</td>
- </tr>
- <tr>
-  <td>Subject: re : subscriptions  stephanie ,  please , discontinue credit and renew the two other publications :  energy & power risk management and the journal of computational finance .  enron north america corp .  from : stephanie e taylor 12 / 12 / 2000 01 : 43 pm  to : vince j kaminski / hou / ect @ ect  cc :  subject : subscriptions  dear vince ,  we will be happy to renew your subscription to risk . in addition , the  following publications are up for renewal :  reg . subscription cost with corp . discount  credit $ 1145 . 00 $ 973 . 25  energy & power risk management $ 375 . 00 $ 318 . 75  the journal of computational finance $ 291 . 75 $ 247 . 99  if you wish to renew these , we will also take care of this for you . i would  appreciate your responding by december 18 th . please include your company and  cost center numbers with your renewal .  thank you ,  stephanie e . taylor  esource  713 - 345 - 7928</td>
-  <td>0</td>
- </tr>
-</table>
-
 <h6>Loading the data</h6>
 
     > emails <- read.csv('emails.csv', stringsAsFactors=FALSE)
+
+<h6>View the first row</h6>
+
+    > emails[1, ]
+    text
+    1 Subject: naturally irresistible your corporate identity  lt is really hard to recollect a company : the  market is full of suqgestions and the information isoverwhelminq ; but a good  catchy logo , stylish statlonery and outstanding website  will make the task much easier .  we do not promise that havinq ordered a iogo your  company will automaticaily become a world ieader : it isguite ciear that  without good products , effective business organization and practicable aim it  will be hotat nowadays market ; but we do promise that your marketing efforts  will become much more effective . here is the list of clear  benefits : creativeness : hand - made , original logos , specially done  to reflect your distinctive company image . convenience : logo and stationery  are provided in all formats ; easy - to - use content management system letsyou  change your website content and even its structure . promptness : you  will see logo drafts within three business days . affordability : your  marketing break - through shouldn ' t make gaps in your budget . 100 % satisfaction  guaranteed : we provide unlimited amount of changes with no extra fees for you to  be surethat you will love the result of this collaboration . have a look at our  portfolio _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ not interested . . . _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+      spam
+    1    1
 
 <h6>Brief Overview of the data</h6>
     > dim(emails)
@@ -250,55 +235,55 @@ To obtain a more reasonable number of terms, limit dtm to contain terms appearin
 
     > '000' %in% names(train)
     [1] TRUE
-    > names(train)
-      [1] "000"        "2000"       "2001"       "713"        "853"        "abl"        "access"    
-      [8] "account"    "addit"      "address"    "allow"      "alreadi"    "also"       "analysi"   
-     [15] "anoth"      "applic"     "appreci"    "approv"     "april"      "area"       "arrang"    
-     [22] "ask"        "assist"     "associ"     "attach"     "attend"     "avail"      "back"      
-     [29] "base"       "begin"      "believ"     "best"       "better"     "book"       "bring"     
-     [36] "busi"       "buy"        "call"       "can"        "case"       "chang"      "check"     
-     [43] "click"      "com"        "come"       "comment"    "communic"   "compani"    "complet"   
-     [50] "confer"     "confirm"    "contact"    "continu"    "contract"   "copi"       "corp"      
-     [57] "corpor"     "cost"       "cours"      "creat"      "credit"     "crenshaw"   "current"   
-     [64] "custom"     "data"       "date"       "day"        "deal"       "dear"       "depart"    
-     [71] "deriv"      "design"     "detail"     "develop"    "differ"     "direct"     "director"  
-     [78] "discuss"    "doc"        "don"        "done"       "due"        "ect"        "edu"       
-     [85] "effect"     "effort"     "either"     "email"      "end"        "energi"     "engin"     
-     [92] "enron"      "etc"        "even"       "event"      "expect"     "experi"     "fax"       
-     [99] "feel"       "file"       "final"      "financ"     "financi"    "find"       "first"     
-    [106] "follow"     "form"       "forward"    "free"       "friday"     "full"       "futur"     
-    [113] "gas"        "get"        "gibner"     "give"       "given"      "good"       "great"     
-    [120] "group"      "happi"      "hear"       "hello"      "help"       "high"       "home"      
-    [127] "hope"       "hou"        "hour"       "houston"    "howev"      "http"       "idea"      
-    [134] "immedi"     "import"     "includ"     "increas"    "industri"   "info"       "inform"    
-    [141] "interest"   "intern"     "internet"   "interview"  "invest"     "invit"      "involv"    
-    [148] "issu"       "john"       "join"       "juli"       "just"       "kaminski"   "keep"      
-    [155] "kevin"      "know"       "last"       "let"        "life"       "like"       "line"      
-    [162] "link"       "list"       "locat"      "london"     "long"       "look"       "lot"       
-    [169] "made"       "mail"       "make"       "manag"      "mani"       "mark"       "market"    
-    [176] "may"        "mean"       "meet"       "member"     "mention"    "messag"     "might"     
-    [183] "model"      "monday"     "money"      "month"      "morn"       "move"       "much"      
-    [190] "name"       "need"       "net"        "new"        "next"       "note"       "now"       
-    [197] "number"     "offer"      "offic"      "one"        "onlin"      "open"       "oper"      
-    [204] "opportun"   "option"     "order"      "origin"     "part"       "particip"   "peopl"     
-    [211] "per"        "person"     "phone"      "place"      "plan"       "pleas"      "point"     
-    [218] "posit"      "possibl"    "power"      "present"    "price"      "problem"    "process"   
-    [225] "product"    "program"    "project"    "provid"     "public"     "put"        "question"  
-    [232] "rate"       "read"       "real"       "realli"     "receiv"     "recent"     "regard"    
-    [239] "relat"      "remov"      "repli"      "report"     "request"    "requir"     "research"  
-    [246] "resourc"    "respond"    "respons"    "result"     "resum"      "return"     "review"    
-    [253] "right"      "risk"       "robert"     "run"        "say"        "schedul"    "school"    
-    [260] "secur"      "see"        "send"       "sent"       "servic"     "set"        "sever"     
-    [267] "shall"      "shirley"    "short"      "sinc"       "sincer"     "site"       "softwar"   
-    [274] "soon"       "sorri"      "special"    "specif"     "start"      "state"      "still"     
-    [281] "stinson"    "student"    "subject"    "success"    "suggest"    "support"    "sure"      
-    [288] "system"     "take"       "talk"       "team"       "term"       "thank"      "thing"     
-    [295] "think"      "thought"    "thursday"   "time"       "today"      "togeth"     "trade"     
-    [302] "tri"        "tuesday"    "two"        "type"       "understand" "unit"       "univers"   
-    [309] "updat"      "use"        "valu"       "version"    "vinc"       "visit"      "vkamin"    
-    [316] "want"       "way"        "web"        "websit"     "wednesday"  "week"       "well"      
-    [323] "will"       "wish"       "within"     "without"    "work"       "write"      "www"       
-    [330] "year"       "spam" 
+   > names(train)
+     [1] "000"        "2000"       "2001"       "713"        "853"        "abl"        "access"    
+     [8] "account"    "addit"      "address"    "allow"      "alreadi"    "also"       "analysi"   
+    [15] "anoth"      "applic"     "appreci"    "approv"     "april"      "area"       "arrang"    
+    [22] "ask"        "assist"     "associ"     "attach"     "attend"     "avail"      "back"      
+    [29] "base"       "begin"      "believ"     "best"       "better"     "book"       "bring"     
+    [36] "busi"       "buy"        "call"       "can"        "case"       "chang"      "check"     
+    [43] "click"      "com"        "come"       "comment"    "communic"   "compani"    "complet"   
+    [50] "confer"     "confirm"    "contact"    "continu"    "contract"   "copi"       "corp"      
+    [57] "corpor"     "cost"       "cours"      "creat"      "credit"     "crenshaw"   "current"   
+    [64] "custom"     "data"       "date"       "day"        "deal"       "dear"       "depart"    
+    [71] "deriv"      "design"     "detail"     "develop"    "differ"     "direct"     "director"  
+    [78] "discuss"    "doc"        "don"        "done"       "due"        "ect"        "edu"       
+    [85] "effect"     "effort"     "either"     "email"      "end"        "energi"     "engin"     
+    [92] "enron"      "etc"        "even"       "event"      "expect"     "experi"     "fax"       
+    [99] "feel"       "file"       "final"      "financ"     "financi"    "find"       "first"     
+   [106] "follow"     "form"       "forward"    "free"       "friday"     "full"       "futur"     
+   [113] "gas"        "get"        "gibner"     "give"       "given"      "good"       "great"     
+   [120] "group"      "happi"      "hear"       "hello"      "help"       "high"       "home"      
+   [127] "hope"       "hou"        "hour"       "houston"    "howev"      "http"       "idea"      
+   [134] "immedi"     "import"     "includ"     "increas"    "industri"   "info"       "inform"    
+   [141] "interest"   "intern"     "internet"   "interview"  "invest"     "invit"      "involv"    
+   [148] "issu"       "john"       "join"       "juli"       "just"       "kaminski"   "keep"      
+   [155] "kevin"      "know"       "last"       "let"        "life"       "like"       "line"      
+   [162] "link"       "list"       "locat"      "london"     "long"       "look"       "lot"       
+   [169] "made"       "mail"       "make"       "manag"      "mani"       "mark"       "market"    
+   [176] "may"        "mean"       "meet"       "member"     "mention"    "messag"     "might"     
+   [183] "model"      "monday"     "money"      "month"      "morn"       "move"       "much"      
+   [190] "name"       "need"       "net"        "new"        "next"       "note"       "now"       
+   [197] "number"     "offer"      "offic"      "one"        "onlin"      "open"       "oper"      
+   [204] "opportun"   "option"     "order"      "origin"     "part"       "particip"   "peopl"     
+   [211] "per"        "person"     "phone"      "place"      "plan"       "pleas"      "point"     
+   [218] "posit"      "possibl"    "power"      "present"    "price"      "problem"    "process"   
+   [225] "product"    "program"    "project"    "provid"     "public"     "put"        "question"  
+   [232] "rate"       "read"       "real"       "realli"     "receiv"     "recent"     "regard"    
+   [239] "relat"      "remov"      "repli"      "report"     "request"    "requir"     "research"  
+   [246] "resourc"    "respond"    "respons"    "result"     "resum"      "return"     "review"    
+   [253] "right"      "risk"       "robert"     "run"        "say"        "schedul"    "school"    
+   [260] "secur"      "see"        "send"       "sent"       "servic"     "set"        "sever"     
+   [267] "shall"      "shirley"    "short"      "sinc"       "sincer"     "site"       "softwar"   
+   [274] "soon"       "sorri"      "special"    "specif"     "start"      "state"      "still"     
+   [281] "stinson"    "student"    "subject"    "success"    "suggest"    "support"    "sure"      
+   [288] "system"     "take"       "talk"       "team"       "term"       "thank"      "thing"     
+   [295] "think"      "thought"    "thursday"   "time"       "today"      "togeth"     "trade"     
+   [302] "tri"        "tuesday"    "two"        "type"       "understand" "unit"       "univers"   
+   [309] "updat"      "use"        "valu"       "version"    "vinc"       "visit"      "vkamin"    
+   [316] "want"       "way"        "web"        "websit"     "wednesday"  "week"       "well"      
+   [323] "will"       "wish"       "within"     "without"    "work"       "write"      "www"       
+   [330] "year"       "spam"      
 
     > colnames(train) <- make.names(colnames(train))
     > colnames(test) <- make.names(colnames(test))
@@ -313,8 +298,6 @@ To obtain a more reasonable number of terms, limit dtm to contain terms appearin
 	      1   80  386
 
 <h6>Model performance assessment</h6>
-<ul>
-<li>Prediction accuracy for logistic regression model on the test dataset: 95.05%</li>
-<li>Prediction accuracy for regression tree model on the test dataset: 93.95%</li>
-<li>Prediction accuracy for random forest model on the test dataset: 93.95%</li>
-</ul>
+Prediction accuracy for logistic regression model on the test dataset: 95.05%
+Prediction accuracy for regression tree model on the test dataset: 93.95%
+Prediction accuracy for random forest model on the test dataset: 93.95% 
